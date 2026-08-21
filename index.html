@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>簿記3級 Answer Sheet</title>
+<style>
+  :root {
+    --line: #555;
+    --line-light: #aaa;
+    --head-bg: #f2f2ee;
+    --accent: #2f5d8a;
+    --paper: #fff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    background: #f7f7f5;
+    color: #222;
+    font-size: 14px;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    background: var(--paper);
+    border-bottom: 2px solid #333;
+    padding: 14px 16px 0;
+  }
+  header h1 {
+    font-size: 20px;
+    margin: 0 0 12px;
+    letter-spacing: .06em;
+    font-weight: 700;
+  }
+  .tabs { display: flex; gap: 6px; }
+  .tab {
+    padding: 8px 28px;
+    font-size: 15px;
+    border: 1px solid var(--line-light);
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    background: #ececea;
+    color: #555;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .tab.active {
+    background: var(--paper);
+    color: #111;
+    font-weight: 700;
+    border-color: #333;
+    position: relative;
+  }
+  .tab.active::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -2px;
+    height: 2px;
+    background: var(--paper);
+  }
+
+  /* ---------- layout ---------- */
+  main { max-width: 980px; margin: 0 auto; padding: 18px 16px 60px; }
+  .panel {
+    background: var(--paper);
+    border: 1px solid #ccc;
+    padding: 18px 18px 22px;
+  }
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--line-light);
+  }
+  .toolbar .left, .toolbar .right {
+    display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
+  }
+  .toolbar label { font-size: 13px; color: #444; }
+  select, input[type="number"] {
+    font: inherit;
+    padding: 5px 6px;
+    border: 1px solid var(--line-light);
+    border-radius: 3px;
+    background: #fff;
+  }
+  input[type="number"] { width: 64px; }
+
+  .sub-toolbar {
+    display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center;
+    margin-bottom: 10px; font-size: 13px; color: #444;
+  }
+  .hint { color: #888; font-size: 12px; }
+  .section-title {
+    font-size: 14px; font-weight: 700; margin: 4px 0 6px;
+  }
+
+  /* ---------- buttons ---------- */
+  button { font-family: inherit; cursor: pointer; }
+  .btn {
+    padding: 7px 16px;
+    font-size: 13px;
+    border: 1px solid #666;
+    border-radius: 3px;
+    background: #fff;
+    color: #222;
+  }
+  .btn:hover { background: #f0f0ee; }
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 600;
+  }
+  .btn-primary:hover { background: #26496c; }
+  .btn-danger { color: #a33; border-color: #b77; }
+  .btn-danger:hover { background: #fbf1f1; }
+  .btn-mini {
+    padding: 3px 10px;
+    font-size: 12px;
+    border: 1px solid var(--line-light);
+    border-radius: 3px;
+    background: #fff;
+    margin-top: 8px;
+  }
+  .btn-mini:hover { background: #f0f0ee; }
+  .del-btn {
+    border: none; background: none;
+    color: #b55; font-size: 15px; line-height: 1;
+    padding: 4px 7px;
+  }
+  .del-btn:hover { color: #d00; }
+
+  /* ---------- tables (answer sheet style) ---------- */
+  .scroll { overflow-x: auto; }
+  table.sheet {
+    border-collapse: collapse;
+    background: var(--paper);
+    width: 100%;
+  }
+  .sheet th, .sheet td { border: 1px solid var(--line); padding: 0; }
+  .sheet th {
+    background: var(--head-bg);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 7px 6px;
+    white-space: nowrap;
+  }
+  .sheet td.num-cell {
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+    padding: 0 8px;
+    background: var(--head-bg);
+    white-space: nowrap;
+  }
+  .sheet td input {
+    display: block;
+    width: 100%;
+    min-width: 60px;
+    border: none;
+    background: transparent;
+    padding: 8px 8px;
+    font: inherit;
+    color: inherit;
+  }
+  .sheet td input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+    background: #f4f8fd;
+  }
+  .sheet td.del-cell, .sheet th.del-cell {
+    border: none;
+    background: transparent;
+    width: 30px;
+    text-align: center;
+  }
+  input.amt { text-align: right; font-variant-numeric: tabular-nums; }
+  td.w-date input { min-width: 52px; }
+
+  /* 勘定記入（左右） */
+  .ledger-wrap { display: flex; flex-wrap: wrap; gap: 18px; }
+  .ledger-side { flex: 1 1 300px; min-width: 260px; }
+  .ledger-name { margin-bottom: 12px; }
+  .ledger-name input {
+    font: inherit; padding: 6px 8px;
+    border: 1px solid var(--line-light); border-radius: 3px;
+    width: 220px; max-width: 100%;
+  }
+
+  /* 短答 */
+  .short-list { display: flex; flex-direction: column; gap: 8px; max-width: 620px; }
+  .short-row { display: flex; align-items: center; gap: 8px; }
+  .short-row .lbl { width: 56px; font-size: 13px; color: #444; flex: none; }
+  .short-row input {
+    flex: 1;
+    font: inherit;
+    padding: 8px 8px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+  }
+  .short-row input:focus {
+    outline: 2px solid var(--accent); outline-offset: -2px; background: #f4f8fd;
+  }
+
+  /* ---------- トレーニング ---------- */
+  .tr-question-head { margin: 4px 0 12px; }
+  .tr-title { font-size: 16px; font-weight: 700; }
+  .tr-badge {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    border: 1px solid var(--accent); color: var(--accent);
+    border-radius: 3px; padding: 1px 7px; margin-right: 8px; vertical-align: 1px;
+  }
+  .tr-desc { color: #333; margin: 6px 0 0; }
+  .tr-qtext {
+    white-space: pre-wrap;
+    background: #fbfbf8;
+    border: 1px solid #ddd;
+    border-left: 3px solid var(--accent);
+    padding: 10px 12px;
+    margin: 10px 0 0;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+  .tr-status {
+    display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline;
+    margin: 14px 0 8px;
+  }
+  .tr-status .main { font-weight: 700; font-size: 14px; }
+  .tr-empty {
+    border: 1px dashed var(--line-light);
+    background: #fbfbf8;
+    padding: 26px 18px;
+    text-align: center;
+    color: #555;
+    line-height: 1.9;
+  }
+  td.static { cursor: pointer; }
+  td.static .val {
+    display: block; padding: 8px 8px; min-height: 1.35em; font-size: 14px;
+  }
+  td.static .val.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.static:hover { outline: 2px dashed #9bb8d4; outline-offset: -2px; }
+  td.static.noval { cursor: default; }
+  td.static.noval:hover { outline: none; }
+  td.blank-cell { background: #fff8dc; }
+  td.blank-cell .cellwrap { display: flex; align-items: center; }
+  td.blank-cell input {
+    width: auto; flex: 1; min-width: 40px;
+    border: none; background: transparent;
+    padding: 8px 8px; font: inherit;
+  }
+  td.blank-cell input:focus { outline: 2px solid var(--accent); outline-offset: -2px; background: #fdf3c9; }
+  .mark { width: 24px; text-align: center; font-weight: 700; flex: none; font-size: 15px; }
+  .mark.ok { color: #1a7f37; }
+  .mark.ng { color: #c62828; }
+  .mark.none { color: #999; font-size: 11px; }
+  .unblank-btn {
+    border: 1px solid #ccc; background: #fff; color: #888;
+    font-size: 10px; border-radius: 3px; padding: 2px 4px; margin: 0 0 0 4px; flex: none;
+    cursor: pointer;
+  }
+  .unblank-btn:hover { color: #333; background: #f0f0ee; }
+  .reveal { font-size: 12px; color: #c62828; padding: 0 8px 6px; text-align: right; }
+  .tr-result { font-weight: 700; }
+
+  /* ---------- モーダル ---------- */
+  #modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.35);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 50;
+    padding: 16px;
+  }
+  #modal-overlay.open { display: flex; }
+  #modal {
+    background: #fff; border-radius: 6px;
+    width: 640px; max-width: 100%;
+    max-height: 92vh; overflow: auto;
+    display: flex; flex-direction: column;
+    padding: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.25);
+  }
+  #modal h2 { margin: 0 0 10px; font-size: 16px; }
+  #modal .modal-note { font-size: 12.5px; color: #555; margin: 0 0 8px; line-height: 1.7; }
+  #modal textarea {
+    width: 100%; height: 260px;
+    font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+    font-size: 12.5px;
+    border: 1px solid var(--line-light);
+    border-radius: 3px;
+    padding: 8px;
+    resize: vertical;
+  }
+  #modal .modal-error { color: #c62828; font-size: 13px; margin: 8px 0 0; white-space: pre-wrap; display: none; }
+  #modal .modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; flex-wrap: wrap; }
+
+  /* ---------- toast ---------- */
+  #toast {
+    position: fixed;
+    left: 50%; bottom: 34px;
+    transform: translateX(-50%);
+    background: #333; color: #fff;
+    padding: 9px 22px;
+    border-radius: 4px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity .25s;
+    pointer-events: none;
+    z-index: 100;
+    white-space: nowrap;
+  }
+  #toast.show { opacity: 1; }
+
+  @media (max-width: 600px) {
+    main { padding: 10px 6px 60px; }
+    .panel { padding: 12px 8px 16px; }
+    .tab { padding: 8px 18px; }
+    .toolbar { justify-content: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>簿記3級 Answer Sheet</h1>
+  <nav class="tabs">
+    <button type="button" class="tab" id="tab-q2">大問2</button>
+    <button type="button" class="tab" id="tab-q3">大問3</button>
+    <button type="button" class="tab" id="tab-tr">トレーニング</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ============ 大問2 ============ -->
+  <section class="panel" id="panel-q2">
+    <div class="toolbar">
+      <div class="left">
+        <label>回答形式：
+          <select id="q2-format">
+            <option value="table">汎用表</option>
+            <option value="journal">仕訳入力</option>
+            <option value="ledger">勘定記入</option>
+            <option value="short">短答・空欄入力</option>
+          </select>
+        </label>
+      </div>
+      <div class="right">
+        <button type="button" class="btn btn-danger" id="q2-reset">回答をリセット</button>
+        <button type="button" class="btn btn-primary" id="q2-copy">AI採点用にコピー</button>
+      </div>
+    </div>
+    <div id="q2-body"></div>
+  </section>
+
+  <!-- ============ 大問3 ============ -->
+  <section class="panel" id="panel-q3">
+    <div class="toolbar">
+      <div class="left">
+        <span class="hint">財務諸表・精算表用（科目｜借方｜貸方）。科目名は自由に変更できます。</span>
+      </div>
+      <div class="right">
+        <button type="button" class="btn btn-danger" id="q3-reset">回答をリセット</button>
+        <button type="button" class="btn btn-primary" id="q3-copy">AI採点用にコピー</button>
+      </div>
+    </div>
+    <div id="q3-body"></div>
+  </section>
+  <!-- ============ トレーニング ============ -->
+  <section class="panel" id="panel-tr">
+    <div class="toolbar">
+      <div class="left">
+        <button type="button" class="btn" id="tr-import">問題をインポート</button>
+        <button type="button" class="btn" id="tr-template">JSONテンプレート</button>
+      </div>
+      <div class="right">
+        <label>穴の数：
+          <select id="tr-count">
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="all">すべて</option>
+          </select>
+        </label>
+        <button type="button" class="btn" id="tr-deal">ランダム出題</button>
+        <button type="button" class="btn btn-primary" id="tr-next">次の1穴</button>
+      </div>
+    </div>
+    <div id="tr-body"></div>
+  </section>
+</main>
+
+<!-- ============ モーダル（インポート／テンプレート） ============ -->
+<div id="modal-overlay">
+  <div id="modal">
+    <h2 id="modal-title"></h2>
+    <p class="modal-note" id="modal-note"></p>
+    <textarea id="modal-text" spellcheck="false"></textarea>
+    <div class="modal-error" id="modal-error"></div>
+    <div class="modal-btns" id="modal-btns"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+'use strict';
+
+/* ========================================================================
+ * 定数・初期状態
+ * ===================================================================== */
+const LS_Q2 = 'boki3_answer_q2_v1';
+const LS_Q3 = 'boki3_answer_q3_v1';
+const LS_UI = 'boki3_answer_ui_v1';
+const BLANK = '未回答';
+
+const FORMAT_LABELS = {
+  table: '汎用表',
+  journal: '仕訳入力',
+  ledger: '勘定記入',
+  short: '短答・空欄入力'
+};
+
+const Q3_DEFAULT_SUBJECTS = [
+  '現金', '当座預金', '売掛金', '貸倒引当金', '繰越商品', '備品',
+  '減価償却累計額', '買掛金', '借入金', '資本金', '売上', '仕入',
+  '給料', '水道光熱費', '減価償却費', '貸倒引当金繰入', '当期純利益'
+];
+
+function emptyJournalRow() { return { ds: '', da: '', cs: '', ca: '' }; }
+function emptyLedgerRow()  { return { date: '', desc: '', amt: '' }; }
+
+function defaultQ2() {
+  return {
+    format: 'table',
+    table: { rows: 6, cols: 5, cells: {} },          // cells["r_c"] = 値
+    journal: [emptyJournalRow(), emptyJournalRow(), emptyJournalRow(), emptyJournalRow()],
+    ledger: {
+      name: '',
+      debit:  [emptyLedgerRow(), emptyLedgerRow(), emptyLedgerRow()],
+      credit: [emptyLedgerRow(), emptyLedgerRow(), emptyLedgerRow()]
+    },
+    short: ['', '', '']
+  };
+}
+function defaultQ3() {
+  return { rows: Q3_DEFAULT_SUBJECTS.map(s => ({ subject: s, debit: '', credit: '' })) };
+}
+function defaultUI() { return { tab: 'q2' }; }
+
+/* ========================================================================
+ * 状態のロード・セーブ（localStorage）
+ * ===================================================================== */
+function loadState(key, defFn) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return defFn();
+    const obj = JSON.parse(raw);
+    if (!obj || typeof obj !== 'object') return defFn();
+    return Object.assign(defFn(), obj);
+  } catch (e) {
+    return defFn();
+  }
+}
+function saveState(key, obj) {
+  try { localStorage.setItem(key, JSON.stringify(obj)); } catch (e) { /* 保存不可環境では無視 */ }
+}
+
+let q2 = loadState(LS_Q2, defaultQ2);
+let q3 = loadState(LS_Q3, defaultQ3);
+let ui = loadState(LS_UI, defaultUI);
+
+const saveQ2 = () => saveState(LS_Q2, q2);
+const saveQ3 = () => saveState(LS_Q3, q3);
+const saveUI = () => saveState(LS_UI, ui);
+
+/* ========================================================================
+ * 汎用ヘルパー
+ * ===================================================================== */
+function el(tag, className, text) {
+  const e = document.createElement(tag);
+  if (className) e.className = className;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+function clamp(n, min, max) {
+  n = parseInt(n, 10);
+  if (isNaN(n)) return min;
+  return Math.min(max, Math.max(min, n));
+}
+
+/* 金額表示用フォーマット：数字なら 100,000 形式、その他はそのまま */
+function fmtAmt(v) {
+  if (v === null || v === undefined) return '';
+  const s = String(v).trim();
+  if (s === '') return '';
+  const plain = s.replace(/,/g, '');
+  return /^-?\d+$/.test(plain) ? Number(plain).toLocaleString('ja-JP') : s;
+}
+
+/* 通常テキスト入力を作る（state 直接更新） */
+function makeTextInput(getVal, setVal, opts) {
+  opts = opts || {};
+  const inp = document.createElement('input');
+  inp.type = 'text';
+  inp.value = getVal() || '';
+  if (opts.placeholder) inp.placeholder = opts.placeholder;
+  if (opts.r !== undefined) { inp.dataset.r = opts.r; inp.dataset.c = opts.c; }
+  inp.addEventListener('input', () => { setVal(inp.value); opts.save(); });
+  return inp;
+}
+
+/* 金額入力を作る：フォーカス中は生値、離れるとカンマ区切り表示 */
+function makeAmtInput(getVal, setVal, opts) {
+  opts = opts || {};
+  const inp = document.createElement('input');
+  inp.type = 'text';
+  inp.inputMode = 'numeric';
+  inp.className = 'amt';
+  inp.value = fmtAmt(getVal());
+  if (opts.r !== undefined) { inp.dataset.r = opts.r; inp.dataset.c = opts.c; }
+  inp.addEventListener('focus', () => { inp.value = getVal() || ''; });
+  inp.addEventListener('input', () => { setVal(inp.value.replace(/,/g, '')); opts.save(); });
+  inp.addEventListener('blur', () => { inp.value = fmtAmt(getVal()); });
+  return inp;
+}
+
+/* ========================================================================
+ * キーボード移動（Enter / ↑↓ / 端での ←→）
+ *   data-grid コンテナ内の data-r / data-c 付き input を移動
+ * ===================================================================== */
+document.addEventListener('keydown', (e) => {
+  const t = e.target;
+  if (!(t instanceof HTMLInputElement)) return;
+  if (t.dataset.r === undefined) return;
+  const grid = t.closest('[data-grid]');
+  if (!grid) return;
+
+  /* トレーニング表は回答欄が飛び飛びなので、出現順で前後の回答欄へ移動する */
+  if (grid.dataset.grid === 'tr') {
+    let dir = 0;
+    if (e.key === 'Enter' || e.key === 'ArrowDown') dir = 1;
+    else if (e.key === 'ArrowUp') dir = -1;
+    else if (e.key === 'ArrowLeft'  && t.selectionStart === 0 && t.selectionEnd === 0) dir = -1;
+    else if (e.key === 'ArrowRight' && t.selectionStart === t.value.length && t.selectionEnd === t.value.length) dir = 1;
+    else return;
+    const all = Array.from(grid.querySelectorAll('input[data-r]'));
+    const idx = all.indexOf(t) + dir;
+    if (idx >= 0 && idx < all.length) {
+      e.preventDefault();
+      all[idx].focus();
+      if (typeof all[idx].select === 'function') all[idx].select();
+    }
+    return;
+  }
+
+  let dr = 0, dc = 0;
+  if (e.key === 'Enter' || e.key === 'ArrowDown') dr = 1;
+  else if (e.key === 'ArrowUp') dr = -1;
+  else if (e.key === 'ArrowLeft'  && t.selectionStart === 0 && t.selectionEnd === 0) dc = -1;
+  else if (e.key === 'ArrowRight' && t.selectionStart === t.value.length && t.selectionEnd === t.value.length) dc = 1;
+  else return;
+
+  const r = parseInt(t.dataset.r, 10) + dr;
+  const c = parseInt(t.dataset.c, 10) + dc;
+  const next = grid.querySelector('input[data-r="' + r + '"][data-c="' + c + '"]');
+  if (next) {
+    e.preventDefault();
+    next.focus();
+    if (typeof next.select === 'function') next.select();
+  }
+});
+
+/* ========================================================================
+ * トースト
+ * ===================================================================== */
+let toastTimer = null;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+/* ========================================================================
+ * クリップボード
+ * ===================================================================== */
+function legacyCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  ta.remove();
+  return ok;
+}
+function copyText(text) {
+  const done = () => toast('コピーしました');
+  const fail = () => toast('コピーに失敗しました');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, () => { legacyCopy(text) ? done() : fail(); });
+  } else {
+    legacyCopy(text) ? done() : fail();
+  }
+}
+
+/* ========================================================================
+ * タブ切り替え
+ * ===================================================================== */
+const TABS = ['q2', 'q3', 'tr'];
+function setTab(tab) {
+  if (!TABS.includes(tab)) tab = 'q2';
+  ui.tab = tab;
+  saveUI();
+  TABS.forEach(t => {
+    document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+    document.getElementById('panel-' + t).style.display = (t === tab) ? '' : 'none';
+  });
+}
+document.getElementById('tab-q2').addEventListener('click', () => setTab('q2'));
+document.getElementById('tab-q3').addEventListener('click', () => setTab('q3'));
+document.getElementById('tab-tr').addEventListener('click', () => setTab('tr'));
+
+/* ========================================================================
+ * 大問2：描画
+ * ===================================================================== */
+const q2Body = document.getElementById('q2-body');
+
+document.getElementById('q2-format').addEventListener('change', (e) => {
+  q2.format = e.target.value;
+  saveQ2();
+  renderQ2Body();
+});
+
+function renderQ2Body() {
+  document.getElementById('q2-format').value = q2.format;
+  q2Body.innerHTML = '';
+  if (q2.format === 'table')   renderGenTable(q2Body);
+  if (q2.format === 'journal') renderJournal(q2Body);
+  if (q2.format === 'ledger')  renderLedger(q2Body);
+  if (q2.format === 'short')   renderShort(q2Body);
+}
+
+/* ---------- 1. 汎用表 ---------- */
+function renderGenTable(root) {
+  const ctrl = el('div', 'sub-toolbar');
+
+  const rowsLabel = el('label', null, '行数：');
+  const rowsInp = document.createElement('input');
+  rowsInp.type = 'number'; rowsInp.min = 1; rowsInp.max = 50; rowsInp.value = q2.table.rows;
+  rowsLabel.appendChild(rowsInp);
+
+  const colsLabel = el('label', null, '列数：');
+  const colsInp = document.createElement('input');
+  colsInp.type = 'number'; colsInp.min = 1; colsInp.max = 12; colsInp.value = q2.table.cols;
+  colsLabel.appendChild(colsInp);
+
+  rowsInp.addEventListener('change', () => {
+    q2.table.rows = clamp(rowsInp.value, 1, 50);
+    saveQ2(); renderQ2Body();
+  });
+  colsInp.addEventListener('change', () => {
+    q2.table.cols = clamp(colsInp.value, 1, 12);
+    saveQ2(); renderQ2Body();
+  });
+
+  ctrl.appendChild(rowsLabel);
+  ctrl.appendChild(colsLabel);
+  ctrl.appendChild(el('span', 'hint', '1行目を見出しにするとコピー結果が読みやすくなります（サイズを縮めても入力値は保持されます）'));
+  root.appendChild(ctrl);
+
+  const wrap = el('div', 'scroll');
+  const table = el('table', 'sheet');
+  table.dataset.grid = 'gen';
+  const tbody = document.createElement('tbody');
+
+  for (let r = 0; r < q2.table.rows; r++) {
+    const tr = document.createElement('tr');
+    for (let c = 0; c < q2.table.cols; c++) {
+      const td = document.createElement('td');
+      const key = r + '_' + c;
+      const inp = makeTextInput(
+        () => q2.table.cells[key] || '',
+        (v) => { q2.table.cells[key] = v; },
+        { r: r, c: c, save: saveQ2 }
+      );
+      td.appendChild(inp);
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  root.appendChild(wrap);
+}
+
+/* ---------- 2. 仕訳入力 ---------- */
+function renderJournal(root) {
+  const wrap = el('div', 'scroll');
+  const table = el('table', 'sheet');
+  table.dataset.grid = 'journal';
+
+  const thead = document.createElement('thead');
+  const hr = document.createElement('tr');
+  ['No.', '借方科目', '借方金額', '貸方科目', '貸方金額'].forEach(h => hr.appendChild(el('th', null, h)));
+  hr.appendChild(el('th', 'del-cell', ''));
+  thead.appendChild(hr);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  q2.journal.forEach((row, i) => {
+    const tr = document.createElement('tr');
+    tr.appendChild(el('td', 'num-cell', String(i + 1)));
+
+    const tdDs = document.createElement('td');
+    tdDs.appendChild(makeTextInput(() => row.ds, v => { row.ds = v; }, { r: i, c: 0, save: saveQ2 }));
+    const tdDa = document.createElement('td');
+    tdDa.appendChild(makeAmtInput(() => row.da, v => { row.da = v; }, { r: i, c: 1, save: saveQ2 }));
+    const tdCs = document.createElement('td');
+    tdCs.appendChild(makeTextInput(() => row.cs, v => { row.cs = v; }, { r: i, c: 2, save: saveQ2 }));
+    const tdCa = document.createElement('td');
+    tdCa.appendChild(makeAmtInput(() => row.ca, v => { row.ca = v; }, { r: i, c: 3, save: saveQ2 }));
+    tr.appendChild(tdDs); tr.appendChild(tdDa); tr.appendChild(tdCs); tr.appendChild(tdCa);
+
+    const tdDel = el('td', 'del-cell');
+    const del = el('button', 'del-btn', '×');
+    del.type = 'button';
+    del.title = 'この行を削除';
+    del.addEventListener('click', () => {
+      if (q2.journal.length <= 1) { q2.journal[0] = emptyJournalRow(); }
+      else q2.journal.splice(i, 1);
+      saveQ2(); renderQ2Body();
+    });
+    tdDel.appendChild(del);
+    tr.appendChild(tdDel);
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  root.appendChild(wrap);
+
+  const add = el('button', 'btn-mini', '＋ 行を追加');
+  add.type = 'button';
+  add.addEventListener('click', () => {
+    q2.journal.push(emptyJournalRow());
+    saveQ2(); renderQ2Body();
+    const inp = q2Body.querySelector('[data-grid="journal"] input[data-r="' + (q2.journal.length - 1) + '"][data-c="0"]');
+    if (inp) inp.focus();
+  });
+  root.appendChild(add);
+}
+
+/* ---------- 3. 勘定記入 ---------- */
+function renderLedger(root) {
+  const nameRow = el('div', 'ledger-name');
+  const nameLabel = el('label', null, '勘定科目名（任意）： ');
+  const nameInp = makeTextInput(
+    () => q2.ledger.name,
+    v => { q2.ledger.name = v; },
+    { save: saveQ2, placeholder: '例：現金' }
+  );
+  nameLabel.appendChild(nameInp);
+  nameRow.appendChild(nameLabel);
+  root.appendChild(nameRow);
+
+  const wrap = el('div', 'ledger-wrap');
+  wrap.appendChild(buildLedgerSide('debit', '借　方'));
+  wrap.appendChild(buildLedgerSide('credit', '貸　方'));
+  root.appendChild(wrap);
+}
+
+function buildLedgerSide(sideKey, title) {
+  const rows = q2.ledger[sideKey];
+  const box = el('div', 'ledger-side');
+  box.appendChild(el('div', 'section-title', title));
+
+  const scroll = el('div', 'scroll');
+  const table = el('table', 'sheet');
+  table.dataset.grid = 'ledger-' + sideKey;
+
+  const thead = document.createElement('thead');
+  const hr = document.createElement('tr');
+  ['日付', '摘要', '金額'].forEach(h => hr.appendChild(el('th', null, h)));
+  hr.appendChild(el('th', 'del-cell', ''));
+  thead.appendChild(hr);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  rows.forEach((row, i) => {
+    const tr = document.createElement('tr');
+
+    const tdDate = el('td', 'w-date');
+    tdDate.appendChild(makeTextInput(() => row.date, v => { row.date = v; }, { r: i, c: 0, save: saveQ2, placeholder: '' }));
+    const tdDesc = document.createElement('td');
+    tdDesc.appendChild(makeTextInput(() => row.desc, v => { row.desc = v; }, { r: i, c: 1, save: saveQ2 }));
+    const tdAmt = document.createElement('td');
+    tdAmt.appendChild(makeAmtInput(() => row.amt, v => { row.amt = v; }, { r: i, c: 2, save: saveQ2 }));
+    tr.appendChild(tdDate); tr.appendChild(tdDesc); tr.appendChild(tdAmt);
+
+    const tdDel = el('td', 'del-cell');
+    const del = el('button', 'del-btn', '×');
+    del.type = 'button';
+    del.title = 'この行を削除';
+    del.addEventListener('click', () => {
+      if (rows.length <= 1) rows[0] = emptyLedgerRow();
+      else rows.splice(i, 1);
+      saveQ2(); renderQ2Body();
+    });
+    tdDel.appendChild(del);
+    tr.appendChild(tdDel);
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  scroll.appendChild(table);
+  box.appendChild(scroll);
+
+  const add = el('button', 'btn-mini', '＋ 行を追加');
+  add.type = 'button';
+  add.addEventListener('click', () => {
+    rows.push(emptyLedgerRow());
+    saveQ2(); renderQ2Body();
+    const inp = q2Body.querySelector('[data-grid="ledger-' + sideKey + '"] input[data-r="' + (rows.length - 1) + '"][data-c="0"]');
+    if (inp) inp.focus();
+  });
+  box.appendChild(add);
+
+  return box;
+}
+
+/* ---------- 4. 短答・空欄入力 ---------- */
+function renderShort(root) {
+  const list = el('div', 'short-list');
+  list.dataset.grid = 'short';
+
+  q2.short.forEach((val, i) => {
+    const row = el('div', 'short-row');
+    row.appendChild(el('span', 'lbl', '回答' + (i + 1)));
+    const inp = makeTextInput(
+      () => q2.short[i],
+      v => { q2.short[i] = v; },
+      { r: i, c: 0, save: saveQ2 }
+    );
+    row.appendChild(inp);
+
+    const del = el('button', 'del-btn', '×');
+    del.type = 'button';
+    del.title = 'この回答欄を削除';
+    del.addEventListener('click', () => {
+      if (q2.short.length <= 1) q2.short[0] = '';
+      else q2.short.splice(i, 1);
+      saveQ2(); renderQ2Body();
+    });
+    row.appendChild(del);
+    list.appendChild(row);
+  });
+  root.appendChild(list);
+
+  const add = el('button', 'btn-mini', '＋ 回答欄を追加');
+  add.type = 'button';
+  add.addEventListener('click', () => {
+    q2.short.push('');
+    saveQ2(); renderQ2Body();
+    const inp = q2Body.querySelector('[data-grid="short"] input[data-r="' + (q2.short.length - 1) + '"]');
+    if (inp) inp.focus();
+  });
+  root.appendChild(add);
+}
+
+/* ========================================================================
+ * 大問3：描画
+ * ===================================================================== */
+const q3Body = document.getElementById('q3-body');
+
+function renderQ3() {
+  q3Body.innerHTML = '';
+
+  const wrap = el('div', 'scroll');
+  const table = el('table', 'sheet');
+  table.dataset.grid = 'q3';
+
+  const thead = document.createElement('thead');
+  const hr = document.createElement('tr');
+  const thSub = el('th', null, '勘定科目');
+  thSub.style.width = '40%';
+  hr.appendChild(thSub);
+  hr.appendChild(el('th', null, '借方'));
+  hr.appendChild(el('th', null, '貸方'));
+  hr.appendChild(el('th', 'del-cell', ''));
+  thead.appendChild(hr);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  q3.rows.forEach((row, i) => {
+    const tr = document.createElement('tr');
+
+    const tdSub = document.createElement('td');
+    tdSub.appendChild(makeTextInput(() => row.subject, v => { row.subject = v; }, { r: i, c: 0, save: saveQ3 }));
+    const tdD = document.createElement('td');
+    tdD.appendChild(makeAmtInput(() => row.debit, v => { row.debit = v; }, { r: i, c: 1, save: saveQ3 }));
+    const tdC = document.createElement('td');
+    tdC.appendChild(makeAmtInput(() => row.credit, v => { row.credit = v; }, { r: i, c: 2, save: saveQ3 }));
+    tr.appendChild(tdSub); tr.appendChild(tdD); tr.appendChild(tdC);
+
+    const tdDel = el('td', 'del-cell');
+    const del = el('button', 'del-btn', '×');
+    del.type = 'button';
+    del.title = 'この行を削除';
+    del.addEventListener('click', () => {
+      if (q3.rows.length <= 1) q3.rows[0] = { subject: '', debit: '', credit: '' };
+      else q3.rows.splice(i, 1);
+      saveQ3(); renderQ3();
+    });
+    tdDel.appendChild(del);
+    tr.appendChild(tdDel);
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  q3Body.appendChild(wrap);
+
+  const add = el('button', 'btn-mini', '＋ 行を追加');
+  add.type = 'button';
+  add.addEventListener('click', () => {
+    q3.rows.push({ subject: '', debit: '', credit: '' });
+    saveQ3(); renderQ3();
+    const inp = q3Body.querySelector('[data-grid="q3"] input[data-r="' + (q3.rows.length - 1) + '"][data-c="0"]');
+    if (inp) inp.focus();
+  });
+  q3Body.appendChild(add);
+}
+
+/* ========================================================================
+ * コピー用テキスト生成
+ * ===================================================================== */
+function vText(x) {
+  const s = String(x === null || x === undefined ? '' : x).trim();
+  return s === '' ? BLANK : s;
+}
+function vAmt(x) {
+  const s = String(x === null || x === undefined ? '' : x).trim();
+  return s === '' ? BLANK : fmtAmt(s);
+}
+function mdEscape(s) {
+  return String(s).replace(/\|/g, '｜').replace(/\r?\n/g, ' ');
+}
+function mdRow(cells) {
+  return '| ' + cells.map(mdEscape).join(' | ') + ' |';
+}
+function mdSep(n) {
+  return '|' + ' --- |'.repeat(n);
+}
+
+function buildQ2Text() {
+  const lines = ['【簿記3級 大問2 私の回答】', '回答形式：' + FORMAT_LABELS[q2.format], ''];
+
+  if (q2.format === 'table') {
+    const { rows, cols, cells } = q2.table;
+    const used = [];
+    for (let r = 0; r < rows; r++) {
+      const rowVals = [];
+      for (let c = 0; c < cols; c++) rowVals.push((cells[r + '_' + c] || '').trim());
+      if (rowVals.some(v => v !== '')) used.push(rowVals);
+    }
+    if (used.length === 0) {
+      lines.push('（' + BLANK + '）');
+    } else {
+      lines.push(mdRow(used[0].map(vText)));
+      lines.push(mdSep(cols));
+      for (let i = 1; i < used.length; i++) lines.push(mdRow(used[i].map(vText)));
+    }
+
+  } else if (q2.format === 'journal') {
+    const used = q2.journal.filter(r =>
+      [r.ds, r.da, r.cs, r.ca].some(x => String(x || '').trim() !== ''));
+    if (used.length === 0) {
+      lines.push('（' + BLANK + '）');
+    } else {
+      lines.push(mdRow(['No.', '借方科目', '借方金額', '貸方科目', '貸方金額']));
+      lines.push(mdSep(5));
+      used.forEach((r, i) => {
+        lines.push(mdRow([String(i + 1), vText(r.ds), vAmt(r.da), vText(r.cs), vAmt(r.ca)]));
+      });
+    }
+
+  } else if (q2.format === 'ledger') {
+    lines.push('勘定科目：' + vText(q2.ledger.name));
+    lines.push('');
+    [['debit', '＜借方＞'], ['credit', '＜貸方＞']].forEach(([key, title]) => {
+      lines.push(title);
+      const used = q2.ledger[key].filter(r =>
+        [r.date, r.desc, r.amt].some(x => String(x || '').trim() !== ''));
+      if (used.length === 0) {
+        lines.push('（記入なし）');
+      } else {
+        lines.push(mdRow(['日付', '摘要', '金額']));
+        lines.push(mdSep(3));
+        used.forEach(r => lines.push(mdRow([vText(r.date), vText(r.desc), vAmt(r.amt)])));
+      }
+      lines.push('');
+    });
+    lines.pop();
+
+  } else if (q2.format === 'short') {
+    q2.short.forEach((v, i) => lines.push('回答' + (i + 1) + '：' + vText(v)));
+  }
+
+  return lines.join('\n');
+}
+
+function buildQ3Text() {
+  const lines = ['【簿記3級 大問3 私の回答】', ''];
+  const used = q3.rows.filter(r =>
+    [r.subject, r.debit, r.credit].some(x => String(x || '').trim() !== ''));
+  if (used.length === 0) {
+    lines.push('（' + BLANK + '）');
+  } else {
+    used.forEach(r => {
+      lines.push(vText(r.subject));
+      lines.push('借方：' + vAmt(r.debit));
+      lines.push('貸方：' + vAmt(r.credit));
+      lines.push('');
+    });
+    lines.pop();
+  }
+  return lines.join('\n');
+}
+
+/* ========================================================================
+ * コピー・リセットボタン
+ * ===================================================================== */
+document.getElementById('q2-copy').addEventListener('click', () => copyText(buildQ2Text()));
+document.getElementById('q3-copy').addEventListener('click', () => copyText(buildQ3Text()));
+
+document.getElementById('q2-reset').addEventListener('click', () => {
+  const label = FORMAT_LABELS[q2.format];
+  if (!confirm('大問2（' + label + '）の回答をリセットします。よろしいですか？')) return;
+  const def = defaultQ2();
+  q2[q2.format] = def[q2.format];
+  saveQ2();
+  renderQ2Body();
+});
+document.getElementById('q3-reset').addEventListener('click', () => {
+  if (!confirm('大問3の回答をリセットします。よろしいですか？')) return;
+  q3 = defaultQ3();
+  saveQ3();
+  renderQ3();
+});
+
+/* ========================================================================
+ * トレーニング（問題JSONインポート・穴埋め学習）
+ *
+ * 問題データ（正解の完成形）・穴の位置・ユーザーの回答を分離して管理する。
+ *   tr.q       … 正解データ { title, category, description, questionText, columns, rows }
+ *   tr.blanks  … 回答対象セルのキー "r_c" の配列
+ *   tr.answers … ユーザー回答 { "r_c": 値 }
+ *   tr.results … 採点結果 { "r_c": "ok"|"ng"|"none" }
+ * ===================================================================== */
+const LS_TR = 'boki3_training_v1';
+
+const TR_SAMPLE = {
+  title: '大問3 決算問題（サンプル）',
+  category: 'question3',
+  description: '決算整理後の残高にもとづき、表の金額を完成させなさい。',
+  questionText: '決算整理事項：\n1. 売掛金の期末残高に対して2%の貸倒引当金を設定する（差額補充法）。\n2. 備品（取得原価300,000円・耐用年数5年・残存価額ゼロ）について定額法により減価償却を行う。',
+  columns: ['勘定科目', '借方', '貸方'],
+  rows: [
+    ['現金', '100000', ''],
+    ['売掛金', '250000', ''],
+    ['貸倒引当金', '', '5000'],
+    ['備品', '300000', ''],
+    ['減価償却累計額', '', '60000'],
+    ['買掛金', '', '180000'],
+    ['資本金', '', '318000'],
+    ['売上', '', '500000'],
+    ['仕入', '350000', ''],
+    ['減価償却費', '60000', ''],
+    ['貸倒引当金繰入', '3000', '']
+  ],
+  blankCells: [[2, 2]]
+};
+const TR_TEMPLATE_TEXT = JSON.stringify(TR_SAMPLE, null, 2);
+
+/* ChatGPTなどにそのまま貼れる問題作成依頼プロンプト */
+const TR_PROMPT_TEXT = [
+  'あなたは日商簿記3級の教材作成者です。以下のJSON仕様に従って、日商簿記3級の本試験レベルの問題を1問作成してください。',
+  '',
+  '【出力ルール】',
+  '- JSONのみを出力する（前後の説明文は不要）',
+  '- すべてのセル値は文字列にする。金額はカンマなしの半角数字（例 "100000"）',
+  '- rows には完成された正解（模範解答）を入れる。値が入らないセルは "" にする',
+  '- questionText に、解答に必要な情報（決算整理事項・取引の内容など）をすべて書き、表の数値と必ず整合させる',
+  '- 借方合計と貸方合計が一致するよう金額を設計し、出力前に必ず検算する',
+  '- 連番など、解答対象にする意味のない値はセルに入れない',
+  '',
+  '【JSON仕様】',
+  '- title: 問題タイトル',
+  '- category: "question2" または "question3"',
+  '- description: 指示文（「〜を完成させなさい」など）',
+  '- questionText: 問題文（改行は \\n）',
+  '- columns: 列名の配列（表の形式は自由。例 ["勘定科目","借方","貸方"]）',
+  '- rows: 行ごとのセル値の配列（正解の完成形。穴を表現するために正解値を書き換えたり "__BLANK__" 等の特殊値を使ったりしない）',
+  '- blankCells（任意）: 開始時に回答欄として隠すセルを [行番号, 列番号]（0始まり）の配列で指定する（例 [[2,2],[4,2]]）。questionTextの決算整理事項に対応するセルを選ぶとよい。省略するとランダムに1か所が隠される',
+  '',
+  '【今回作ってほしい問題】',
+  '大問3形式：決算整理後の貸借対照表・損益計算書（または残高試算表）を完成させる問題。',
+  'columns は ["勘定科目","借方","貸方"]、行数は12行前後。',
+  '',
+  '【出力例】',
+  TR_TEMPLATE_TEXT
+].join('\n');
+
+function defaultTR() {
+  return { q: null, count: '1', blanks: [], answers: {}, checked: false, results: {}, revealed: false };
+}
+let tr = loadState(LS_TR, defaultTR);
+/* 壊れた保存データへの防御 */
+if (tr.q && (!Array.isArray(tr.q.rows) || !Array.isArray(tr.q.columns))) tr = defaultTR();
+if (!Array.isArray(tr.blanks)) tr.blanks = [];
+if (!tr.answers || typeof tr.answers !== 'object') tr.answers = {};
+if (!tr.results || typeof tr.results !== 'object') tr.results = {};
+const saveTR = () => saveState(LS_TR, tr);
+
+function isNumericVal(v) {
+  return /^-?\d+$/.test(String(v === null || v === undefined ? '' : v).trim().replace(/,/g, ''));
+}
+/* 採点用の正規化：全角数字→半角、カンマ・空白除去 */
+function normAnswer(x) {
+  return String(x === null || x === undefined ? '' : x)
+    .replace(/[０-９]/g, d => String.fromCharCode(d.charCodeAt(0) - 0xFEE0))
+    .replace(/[，,]/g, '')
+    .replace(/[\s　]+/g, '');
+}
+/* AIがコードフェンス付きで出力した場合に備えて ``` を除去 */
+function stripFences(s) {
+  return String(s || '').trim()
+    .replace(/^```[a-zA-Z]*\s*/, '')
+    .replace(/```\s*$/, '')
+    .trim();
+}
+
+/* 問題JSONを内部形式に正規化する。不正なら Error を投げる */
+function normalizeQuestion(obj) {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+    throw new Error('JSONオブジェクトではありません');
+  }
+  let columns = obj.columns;
+  let rows = obj.rows;
+  if (!Array.isArray(rows) || rows.length === 0) {
+    throw new Error('rows（表データ）がありません');
+  }
+  if (rows.every(r => r && typeof r === 'object' && !Array.isArray(r))) {
+    /* {label, debit, credit} 形式にも対応 */
+    if (!Array.isArray(columns) || columns.length === 0) columns = ['勘定科目', '借方', '貸方'];
+    rows = rows.map(r => [
+      r.label !== undefined ? r.label : (r.subject !== undefined ? r.subject : ''),
+      r.debit !== undefined ? r.debit : '',
+      r.credit !== undefined ? r.credit : ''
+    ]);
+  } else if (rows.every(r => Array.isArray(r))) {
+    if (!Array.isArray(columns) || columns.length === 0) {
+      const n = Math.max.apply(null, rows.map(r => r.length));
+      columns = Array.from({ length: n }, (_, i) => '列' + (i + 1));
+    }
+  } else {
+    throw new Error('rowsの形式が不正です（セル値の配列、または label/debit/credit のオブジェクトの配列にしてください）');
+  }
+  columns = columns.map(c => String(c === null || c === undefined ? '' : c));
+  const ncol = columns.length;
+  rows = rows.map(r => {
+    const a = r.slice(0, ncol).map(x => (x === null || x === undefined) ? '' : String(x));
+    while (a.length < ncol) a.push('');
+    return a;
+  });
+  /* blankCells（任意）: 開始時に回答欄として隠すセルの [行,列]（0始まり）の配列。
+     範囲外・正解が空のセル・重複は除外する。rows自体は書き換えない。 */
+  const blankCells = [];
+  if (Array.isArray(obj.blankCells)) {
+    obj.blankCells.forEach(p => {
+      if (!Array.isArray(p) || p.length < 2) return;
+      const r = parseInt(p[0], 10);
+      const c = parseInt(p[1], 10);
+      if (isNaN(r) || isNaN(c)) return;
+      if (r < 0 || r >= rows.length || c < 0 || c >= ncol) return;
+      if (String(rows[r][c]).trim() === '') return;
+      const key = r + '_' + c;
+      if (blankCells.indexOf(key) === -1) blankCells.push(key);
+    });
+  }
+  return {
+    title: String(obj.title || '無題の問題'),
+    category: obj.category ? String(obj.category) : '',
+    description: obj.description ? String(obj.description) : '',
+    questionText: obj.questionText ? String(obj.questionText) : '',
+    columns: columns,
+    rows: rows,
+    blankCells: blankCells
+  };
+}
+
+/* 正解が存在する（＝穴にできる）セルのキー一覧 */
+function trCandidates() {
+  const out = [];
+  if (!tr.q) return out;
+  tr.q.rows.forEach((row, r) => row.forEach((v, c) => {
+    if (String(v === null || v === undefined ? '' : v).trim() !== '') out.push(r + '_' + c);
+  }));
+  return out;
+}
+
+/* 穴の数を指定してランダムに出題する（直前の穴はできるだけ避ける） */
+function setRandomBlanks(count) {
+  if (!tr.q) { toast('先に問題をインポートしてください'); return; }
+  const candidates = trCandidates();
+  if (candidates.length === 0) { toast('回答対象にできるセルがありません'); return; }
+  const n = (count === 'all') ? candidates.length
+                              : Math.min(parseInt(count, 10) || 1, candidates.length);
+  const prev = tr.blanks || [];
+  let pool = candidates.filter(k => prev.indexOf(k) === -1);
+  if (pool.length < n) pool = candidates.slice();
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+  }
+  tr.blanks = pool.slice(0, n);
+  tr.answers = {};
+  tr.results = {};
+  tr.checked = false;
+  tr.revealed = false;
+  saveTR();
+  renderTraining();
+  const first = document.querySelector('#tr-body [data-grid="tr"] input');
+  if (first) first.focus();
+}
+
+/* 答え合わせ */
+function gradeTraining() {
+  if (!tr.q || tr.blanks.length === 0) { toast('回答欄がありません'); return; }
+  let ok = 0, ng = 0, none = 0;
+  tr.results = {};
+  tr.blanks.forEach(k => {
+    const p = k.split('_');
+    const correct = normAnswer(tr.q.rows[p[0]][p[1]]);
+    const user = normAnswer(tr.answers[k]);
+    if (user === '') { tr.results[k] = 'none'; none++; }
+    else if (user === correct) { tr.results[k] = 'ok'; ok++; }
+    else { tr.results[k] = 'ng'; ng++; }
+  });
+  tr.checked = true;
+  saveTR();
+  renderTraining();
+  if (ng === 0 && none === 0) toast('全問正解！');
+}
+
+/* 問題データを適用する。
+   blankCells の明示指定があればそれを優先し、なければランダム1穴で開始する。 */
+function applyQuestion(rawObj) {
+  const qn = normalizeQuestion(rawObj);   // 失敗時はthrow（呼び出し側でcatch）
+  tr = defaultTR();
+  tr.q = qn;
+  if (Array.isArray(qn.blankCells) && qn.blankCells.length > 0) {
+    tr.blanks = qn.blankCells.slice();
+    saveTR();
+    renderTraining();
+    const first = document.querySelector('#tr-body [data-grid="tr"] input');
+    if (first) first.focus();
+    toast('問題を読み込みました（回答欄：' + tr.blanks.length + 'か所）');
+  } else {
+    saveTR();
+    setRandomBlanks(1);
+    toast('問題を読み込みました（まずは1か所だけ）');
+  }
+}
+
+/* ---------- トレーニング画面の描画 ---------- */
+const trBody = document.getElementById('tr-body');
+
+function buildBlankCell(key, correctVal, r, c) {
+  const td = el('td', 'blank-cell');
+  const wrap = el('div', 'cellwrap');
+
+  const unblank = el('button', 'unblank-btn', '解');
+  unblank.type = 'button';
+  unblank.title = 'このセルを正解表示に戻す';
+  unblank.addEventListener('click', () => {
+    tr.blanks = tr.blanks.filter(k => k !== key);
+    delete tr.answers[key];
+    delete tr.results[key];
+    saveTR();
+    renderTraining();
+  });
+
+  const mark = el('span', 'mark');
+  const res = tr.results[key];
+  if (res === 'ok') { mark.textContent = '○'; mark.classList.add('ok'); }
+  else if (res === 'ng') { mark.textContent = '×'; mark.classList.add('ng'); }
+  else if (res === 'none') { mark.textContent = '未'; mark.classList.add('none'); }
+
+  const getV = () => tr.answers[key] || '';
+  const setV = (v) => {
+    tr.answers[key] = v;
+    if (tr.results[key]) {           // 入力し直したら判定マークを消す
+      delete tr.results[key];
+      mark.textContent = '';
+      mark.className = 'mark';
+    }
+  };
+  const inp = isNumericVal(correctVal)
+    ? makeAmtInput(getV, setV, { r: r, c: c, save: saveTR })
+    : makeTextInput(getV, setV, { r: r, c: c, save: saveTR });
+  inp.placeholder = '？';
+
+  wrap.appendChild(unblank);
+  wrap.appendChild(inp);
+  wrap.appendChild(mark);
+  td.appendChild(wrap);
+
+  if (tr.revealed && res !== 'ok') {
+    td.appendChild(el('div', 'reveal', '正解：' + fmtAmt(correctVal)));
+  }
+  return td;
+}
+
+function renderTraining() {
+  trBody.innerHTML = '';
+  const hasQ = !!tr.q;
+  document.getElementById('tr-count').value = tr.count || '1';
+  document.getElementById('tr-deal').disabled = !hasQ;
+  document.getElementById('tr-next').disabled = !hasQ;
+
+  if (!hasQ) {
+    const box = el('div', 'tr-empty');
+    box.appendChild(el('div', null, 'まだ問題が読み込まれていません。'));
+    box.appendChild(el('div', 'hint', '「問題をインポート」からChatGPTなどで生成した問題JSONを貼り付けてください。形式は「JSONテンプレート」で確認できます。'));
+    const btn = el('button', 'btn', 'サンプル問題を読み込んで試す');
+    btn.type = 'button';
+    btn.style.marginTop = '12px';
+    btn.addEventListener('click', () => {
+      try { applyQuestion(JSON.parse(TR_TEMPLATE_TEXT)); } catch (e) { toast('問題データを読み込めませんでした'); }
+    });
+    box.appendChild(btn);
+    trBody.appendChild(box);
+    return;
+  }
+
+  /* 問題ヘッダ */
+  const head = el('div', 'tr-question-head');
+  const titleLine = el('div');
+  if (tr.q.category) {
+    const catLabel = tr.q.category === 'question2' ? '大問2'
+                   : tr.q.category === 'question3' ? '大問3' : tr.q.category;
+    titleLine.appendChild(el('span', 'tr-badge', catLabel));
+  }
+  titleLine.appendChild(el('span', 'tr-title', tr.q.title));
+  const clearBtn = el('button', 'btn-mini', '問題を削除');
+  clearBtn.type = 'button';
+  clearBtn.style.marginLeft = '12px';
+  clearBtn.style.marginTop = '0';
+  clearBtn.addEventListener('click', () => {
+    if (!confirm('読み込んだ問題と回答状況を削除します。よろしいですか？')) return;
+    tr = defaultTR();
+    saveTR();
+    renderTraining();
+  });
+  titleLine.appendChild(clearBtn);
+  head.appendChild(titleLine);
+  if (tr.q.description) head.appendChild(el('p', 'tr-desc', tr.q.description));
+  if (tr.q.questionText) head.appendChild(el('div', 'tr-qtext', tr.q.questionText));
+  trBody.appendChild(head);
+
+  /* ステータス */
+  const status = el('div', 'tr-status');
+  const n = tr.blanks.length;
+  status.appendChild(el('span', 'main',
+    n === 0 ? '回答欄はありません' :
+    n === 1 ? '今回の問題：1か所 — 1問だけ埋めてみよう' :
+              '今回の問題：' + n + 'か所'));
+  status.appendChild(el('span', 'hint', 'セルをクリック＝回答欄にする ／ 回答欄左の「解」＝正解表示に戻す'));
+  trBody.appendChild(status);
+
+  /* 回答表 */
+  const wrap = el('div', 'scroll');
+  const table = el('table', 'sheet');
+  table.dataset.grid = 'tr';
+  const thead = document.createElement('thead');
+  const hr = document.createElement('tr');
+  tr.q.columns.forEach(cn => hr.appendChild(el('th', null, cn)));
+  thead.appendChild(hr);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  tr.q.rows.forEach((row, r) => {
+    const rowEl = document.createElement('tr');
+    row.forEach((val, c) => {
+      const key = r + '_' + c;
+      if (tr.blanks.indexOf(key) !== -1) {
+        rowEl.appendChild(buildBlankCell(key, val, r, c));
+      } else {
+        const hasVal = String(val === null || val === undefined ? '' : val).trim() !== '';
+        const td = el('td', 'static' + (hasVal ? '' : ' noval'));
+        td.appendChild(el('span', 'val' + (isNumericVal(val) ? ' num' : ''), fmtAmt(val)));
+        if (hasVal) {
+          td.title = 'クリックで回答欄にする';
+          td.addEventListener('click', () => {
+            tr.blanks.push(key);
+            tr.revealed = false;
+            saveTR();
+            renderTraining();
+            const inp = document.querySelector('#tr-body input[data-r="' + r + '"][data-c="' + c + '"]');
+            if (inp) inp.focus();
+          });
+        }
+        rowEl.appendChild(td);
+      }
+    });
+    tbody.appendChild(rowEl);
+  });
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  trBody.appendChild(wrap);
+
+  /* アクション行 */
+  const act = el('div', 'sub-toolbar');
+  act.style.marginTop = '12px';
+  const gradeBtn = el('button', 'btn btn-primary', '答え合わせ');
+  gradeBtn.type = 'button';
+  gradeBtn.disabled = tr.blanks.length === 0;
+  gradeBtn.addEventListener('click', gradeTraining);
+  act.appendChild(gradeBtn);
+
+  const revealBtn = el('button', 'btn', '正解を見る');
+  revealBtn.type = 'button';
+  revealBtn.disabled = !tr.checked || tr.revealed;
+  revealBtn.addEventListener('click', () => {
+    tr.revealed = true;
+    saveTR();
+    renderTraining();
+  });
+  act.appendChild(revealBtn);
+
+  if (tr.checked) {
+    let ok = 0, ng = 0, none = 0;
+    tr.blanks.forEach(k => {
+      if (tr.results[k] === 'ok') ok++;
+      else if (tr.results[k] === 'ng') ng++;
+      else if (tr.results[k] === 'none') none++;
+    });
+    act.appendChild(el('span', 'tr-result', '結果：○ ' + ok + '　× ' + ng + '　未回答 ' + none));
+  }
+  trBody.appendChild(act);
+}
+
+/* ---------- モーダル ---------- */
+const modalOverlay = document.getElementById('modal-overlay');
+const modalTitle = document.getElementById('modal-title');
+const modalNote = document.getElementById('modal-note');
+const modalText = document.getElementById('modal-text');
+const modalError = document.getElementById('modal-error');
+const modalBtns = document.getElementById('modal-btns');
+
+function closeModal() { modalOverlay.classList.remove('open'); }
+modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modalOverlay.classList.contains('open')) closeModal();
+});
+function showModalError(msg) {
+  modalError.textContent = msg;
+  modalError.style.display = 'block';
+}
+
+function openImportModal() {
+  modalTitle.textContent = '問題をインポート';
+  modalNote.textContent = 'ChatGPTなどで生成した問題JSONを貼り付けて「読み込む」を押してください。形式は「JSONテンプレート」で確認できます。';
+  modalText.value = '';
+  modalText.readOnly = false;
+  modalText.placeholder = '{\n  "title": "...",\n  "columns": ["勘定科目", "借方", "貸方"],\n  "rows": [["現金", "100000", ""]]\n}';
+  modalError.style.display = 'none';
+  modalBtns.innerHTML = '';
+
+  const cancel = el('button', 'btn', '閉じる');
+  cancel.type = 'button';
+  cancel.addEventListener('click', closeModal);
+  const load = el('button', 'btn btn-primary', '読み込む');
+  load.type = 'button';
+  load.addEventListener('click', () => {
+    let obj;
+    try {
+      obj = JSON.parse(stripFences(modalText.value));
+    } catch (e) {
+      showModalError('問題データを読み込めませんでした：JSONとして解釈できません。\n' + e.message);
+      return;
+    }
+    try {
+      applyQuestion(obj);
+      closeModal();
+    } catch (e) {
+      showModalError('問題データを読み込めませんでした：' + e.message);
+    }
+  });
+  modalBtns.appendChild(cancel);
+  modalBtns.appendChild(load);
+  modalOverlay.classList.add('open');
+  modalText.focus();
+}
+
+function openTemplateModal() {
+  modalTitle.textContent = '問題JSONテンプレート';
+  modalNote.textContent = 'この形式でAIに問題を作ってもらい、「問題をインポート」から貼り付けてください。rowsには完成された正解を入れます（金額はカンマなしの文字列、正解のないセルは ""）。blankCellsで最初に隠すセルを [行,列]（0始まり）で指定できます（省略時はランダム1穴）。columnsを変えれば仕訳や補助簿など任意の表になります。';
+  modalText.value = TR_TEMPLATE_TEXT;
+  modalText.readOnly = true;
+  modalError.style.display = 'none';
+  modalBtns.innerHTML = '';
+
+  const close = el('button', 'btn', '閉じる');
+  close.type = 'button';
+  close.addEventListener('click', closeModal);
+  const sample = el('button', 'btn', 'この問題を読み込んで試す');
+  sample.type = 'button';
+  sample.addEventListener('click', () => {
+    try {
+      applyQuestion(JSON.parse(TR_TEMPLATE_TEXT));
+      closeModal();
+    } catch (e) { toast('問題データを読み込めませんでした'); }
+  });
+  const copy = el('button', 'btn', 'テンプレートをコピー');
+  copy.type = 'button';
+  copy.addEventListener('click', () => copyText(TR_TEMPLATE_TEXT));
+  const prompt = el('button', 'btn btn-primary', 'AI依頼プロンプトをコピー');
+  prompt.type = 'button';
+  prompt.title = 'ChatGPTなどに貼るとこの形式の問題を作ってくれる依頼文をコピーします';
+  prompt.addEventListener('click', () => copyText(TR_PROMPT_TEXT));
+  modalBtns.appendChild(close);
+  modalBtns.appendChild(sample);
+  modalBtns.appendChild(copy);
+  modalBtns.appendChild(prompt);
+  modalOverlay.classList.add('open');
+}
+
+/* ---------- トレーニングのイベント ---------- */
+document.getElementById('tr-import').addEventListener('click', openImportModal);
+document.getElementById('tr-template').addEventListener('click', openTemplateModal);
+document.getElementById('tr-count').addEventListener('change', (e) => {
+  tr.count = e.target.value;
+  saveTR();
+});
+document.getElementById('tr-deal').addEventListener('click', () => setRandomBlanks(tr.count || '1'));
+document.getElementById('tr-next').addEventListener('click', () => setRandomBlanks(1));
+
+/* ========================================================================
+ * 初期化
+ * ===================================================================== */
+setTab(ui.tab);
+renderQ2Body();
+renderQ3();
+renderTraining();
+</script>
+</body>
+</html>
